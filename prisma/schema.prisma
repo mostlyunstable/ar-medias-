@@ -1,0 +1,74 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL") // Essential for Supabase/Neon connection pooling
+}
+
+enum InquiryStatus {
+  PENDING
+  REVIEWED
+  REPLIED
+  ARCHIVED
+}
+
+model Project {
+  id          String    @id @default(cuid())
+  title       String
+  slug        String    @unique
+  description String
+  thumbnail   String
+  gallery     String[]
+  techStack   String[]
+  featured    Boolean   @default(false)
+  category    String
+  seoTitle    String?
+  seoDesc     String?
+  liveUrl     String?
+  githubUrl   String?
+  orderIndex  Int       @default(0)
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime? // Soft delete
+
+  @@index([slug])
+  @@index([orderIndex])
+  @@index([featured])
+}
+
+model Inquiry {
+  id          String        @id @default(cuid())
+  name        String
+  email       String
+  message     String
+  status      InquiryStatus @default(PENDING)
+  
+  // Security & Spam Mitigation
+  ipAddress   String?
+  userAgent   String?
+  country     String?
+  isSpam      Boolean       @default(false)
+  spamScore   Float         @default(0.0)
+  
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  deletedAt   DateTime?     // Soft delete
+
+  @@index([status])
+  @@index([createdAt])
+  @@index([email])
+}
+
+model Admin {
+  id             String    @id @default(cuid())
+  email          String    @unique
+  hashedPassword String    // Argon2 or Bcrypt hashed
+  
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  deletedAt      DateTime? // Soft delete
+}

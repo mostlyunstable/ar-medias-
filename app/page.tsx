@@ -1,12 +1,17 @@
-import { Hero } from "@/components/hero";
-import { About } from "@/components/sections/about";
-import { Services } from "@/components/sections/services";
-import { Clients } from "@/components/sections/clients";
-import { Portfolio } from "@/components/sections/portfolio";
+import { Hero }        from "@/components/hero";
+import { Clients }     from "@/components/sections/clients";
+import { About }       from "@/components/sections/about";
 import { WhyChooseUs } from "@/components/sections/why-choose-us";
-import { Testimonials } from "@/components/sections/testimonials";
-import { Contact } from "@/components/sections/contact";
-import { Footer } from "@/components/footer";
+import { Footer }      from "@/components/footer";
+import dynamic from "next/dynamic";
+
+// Only client components need code-splitting — server components are zero JS
+const Services     = dynamic(() => import("@/components/sections/services").then(m => ({ default: m.Services })));
+const Portfolio    = dynamic(() => import("@/components/sections/portfolio").then(m => ({ default: m.Portfolio })));
+const Testimonials = dynamic(() => import("@/components/sections/testimonials").then(m => ({ default: m.Testimonials })));
+const Contact      = dynamic(() => import("@/components/sections/contact").then(m => ({ default: m.Contact })));
+
+export const revalidate = 3600; // Cache for 1 hour
 
 export default function Home() {
   return (

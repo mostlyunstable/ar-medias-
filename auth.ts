@@ -1,8 +1,8 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { z } from "zod";
-// import bcrypt from "bcryptjs";
-// import prisma from "./lib/db";
+import bcrypt from "bcryptjs";
+import prisma from "./lib/db";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   pages: {
@@ -27,20 +27,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         if (parsedCredentials.success) {
           const { email, password } = parsedCredentials.data;
           
-          /*
           const admin = await prisma.admin.findUnique({ where: { email } });
           if (!admin) return null;
 
           const passwordsMatch = await bcrypt.compare(password, admin.hashedPassword);
           if (passwordsMatch) return { id: admin.id, email: admin.email, role: "ADMIN" };
-          */
-          
-          // Mock successful login for dev until DB is wired up
-          if (email === "admin@armedias.com" && password === "password123") {
-            return { id: "1", email: "admin@armedias.com", role: "ADMIN" };
-          }
-        }
-        return null;
       }
     })
   ],

@@ -1,7 +1,3 @@
-"use client";
-
-import { motion } from "framer-motion";
-
 const clients = [
   "TechFlow", "Lumina Systems", "Nova Growth", "Aura Dynamics", "Synthetix", 
   "Nexus Labs", "Elevate AI", "Horizon Tech", "Omni Automations"
@@ -15,28 +11,19 @@ export function Clients() {
           Trusted By Modern Businesses
         </h3>
       </div>
-      
-      {/* Marquee Animation */}
-      <div className="flex w-[200%] md:w-[150%] lg:w-[120%]">
-        <motion.div
-          animate={{ x: ["0%", "-50%"] }}
-          transition={{
-            repeat: Infinity,
-            ease: "linear",
-            duration: 20,
-          }}
-          className="flex whitespace-nowrap items-center"
-        >
-          {/* Repeat array twice for seamless loop */}
+
+      {/* Pure CSS marquee — GPU composited, zero JS, fixes Lighthouse non-composited warning */}
+      <div className="flex overflow-hidden">
+        <div className="flex whitespace-nowrap items-center animate-marquee">
           {[...clients, ...clients].map((client, index) => (
-            <div 
-              key={index} 
+            <div
+              key={index}
               className="px-8 md:px-16 text-3xl md:text-5xl font-black uppercase text-foreground/20 font-heading"
             >
               {client}
             </div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

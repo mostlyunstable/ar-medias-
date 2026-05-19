@@ -1,47 +1,25 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Environment, Float, MeshDistortMaterial } from "@react-three/drei";
-import { Suspense } from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
+
+const Scene = dynamic(() => import("./canvas-scene"), { ssr: false });
 
 export function Hero() {
   return (
     <section id="home" className="relative w-full min-h-screen flex flex-col items-center justify-center overflow-hidden pt-20">
       {/* 3D Canvas Background */}
       <div className="absolute inset-0 z-0 opacity-60">
-        <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
-          <Suspense fallback={null}>
-            <Environment preset="city" />
-            <ambientLight intensity={0.5} />
-            <directionalLight position={[10, 10, 5]} intensity={1} />
-            <Float speed={2} rotationIntensity={1} floatIntensity={2}>
-              <mesh scale={1.5}>
-                <octahedronGeometry args={[1, 0]} />
-                <MeshDistortMaterial
-                  color="#ffffff"
-                  envMapIntensity={2}
-                  clearcoat={1}
-                  clearcoatRoughness={0.1}
-                  metalness={0.9}
-                  roughness={0.1}
-                  distort={0.2}
-                  speed={2}
-                />
-              </mesh>
-            </Float>
-            <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={0.5} />
-          </Suspense>
-        </Canvas>
+        <Scene />
       </div>
 
       {/* Foreground Content */}
       <div className="relative z-10 flex flex-col items-center text-center px-6 max-w-6xl mt-12 md:mt-0 pointer-events-none">
         <motion.h1
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 1, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-tight uppercase font-heading"
         >
           Future-Ready IT Solutions <br />
@@ -81,9 +59,10 @@ export function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1, duration: 1 }}
+        aria-label="Scroll down"
         className="absolute bottom-10 z-10 w-12 h-12 rounded-full bg-accent text-black flex items-center justify-center animate-bounce pointer-events-none"
       >
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M12 5v14M19 12l-7 7-7-7"/>
         </svg>
       </motion.div>

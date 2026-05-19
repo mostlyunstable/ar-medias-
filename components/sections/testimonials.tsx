@@ -43,17 +43,14 @@ export function Testimonials() {
         </motion.p>
       </div>
 
-      <div className="flex overflow-x-auto gap-8 pb-12 snap-x snap-mandatory hide-scrollbar">
+      <ul className="flex overflow-x-auto gap-8 pb-12 snap-x snap-mandatory hide-scrollbar" role="list">
         {testimonials.map((item, i) => (
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.1 }}
+          <li
             key={i}
+            role="listitem"
             className="min-w-[85vw] md:min-w-[400px] snap-center bg-foreground/5 p-10 rounded-3xl"
           >
-            <svg className="w-10 h-10 text-accent mb-6 opacity-50" fill="currentColor" viewBox="0 0 32 32">
+            <svg aria-hidden="true" className="w-10 h-10 text-accent mb-6 opacity-50" fill="currentColor" viewBox="0 0 32 32">
               <path d="M10.003 6C4.488 6 0 10.488 0 16.003v10h10v-10H5.53C5.787 11.87 9.176 8.5 13.337 8.5V6h-3.334zm18.663 0C23.15 6 18.663 10.488 18.663 16.003v10h10v-10h-4.47c.257-4.133 3.646-7.5 7.807-7.5V6h-3.334z"/>
             </svg>
             <p className="text-xl md:text-2xl font-medium leading-relaxed mb-8 text-foreground/90">
@@ -63,9 +60,9 @@ export function Testimonials() {
               <div className="font-semibold">{item.author}</div>
               <div className="text-foreground/50 text-sm mt-1">{item.company}</div>
             </div>
-          </motion.div>
+          </li>
         ))}
-      </div>
+      </ul>
     </section>
   );
 }

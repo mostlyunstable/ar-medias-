@@ -1,8 +1,30 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useState } from "react";
+import { submitContactForm } from "@/lib/actions/contact";
 
 export function Contact() {
+  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState<{ success?: boolean; message?: string } | null>(null);
+
+  async function handleAction(formData: FormData) {
+    setLoading(true);
+    setStatus(null);
+    try {
+      const result = await submitContactForm(formData);
+      if (result.error) {
+        setStatus({ success: false, message: result.error });
+      } else {
+        setStatus({ success: true, message: result.message });
+        // Optional: Reset form here
+      }
+    } catch (err) {
+      setStatus({ success: false, message: "A network error occurred." });
+    }
+    setLoading(false);
+  }
+
   return (
     <section id="contact" className="py-32 px-6 md:px-12 lg:px-24 max-w-7xl mx-auto w-full">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
@@ -44,27 +66,27 @@ export function Contact() {
           viewport={{ once: true }}
           className="bg-foreground/5 p-8 md:p-12 rounded-3xl"
         >
-          <form className="flex flex-col gap-6">
+          <form action={handleAction} className="flex flex-col gap-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="flex flex-col gap-2">
-                <label className="text-sm font-medium">Name</label>
-                <input type="text" className="bg-transparent border-b border-foreground/20 py-3 focus:border-accent outline-none transition-colors" placeholder="John Doe" />
+                <label htmlFor="name" className="text-sm font-medium">Name</label>
+                <input required name="name" id="name" type="text" className="bg-transparent border-b border-foreground/20 py-3 focus:border-accent outline-none transition-colors" placeholder="John Doe" />
               </div>
               <div className="flex flex-col gap-2">
-                <label className="text-sm font-medium">Email</label>
-                <input type="email" className="bg-transparent border-b border-foreground/20 py-3 focus:border-accent outline-none transition-colors" placeholder="john@company.com" />
+                <label htmlFor="email" className="text-sm font-medium">Email</label>
+                <input required name="email" id="email" type="email" className="bg-transparent border-b border-foreground/20 py-3 focus:border-accent outline-none transition-colors" placeholder="john@company.com" />
               </div>
             </div>
             
             <div className="flex flex-col gap-2">
-              <label className="text-sm font-medium">Company Name</label>
-              <input type="text" className="bg-transparent border-b border-foreground/20 py-3 focus:border-accent outline-none transition-colors" placeholder="Company LLC" />
+              <label htmlFor="company" className="text-sm font-medium">Company Name (Optional)</label>
+              <input name="company" id="company" type="text" className="bg-transparent border-b border-foreground/20 py-3 focus:border-accent outline-none transition-colors" placeholder="Company LLC" />
             </div>
 
             <div className="flex flex-col gap-2">
-              <label className="text-sm font-medium">Service Interested In</label>
-              <select className="bg-transparent border-b border-foreground/20 py-3 focus:border-accent outline-none transition-colors appearance-none">
-                <option value="" disabled selected>Select a service...</option>
+              <label htmlFor="service" className="text-sm font-medium">Service Interested In</label>
+              <select name="service" id="service" defaultValue="" className="bg-transparent border-b border-foreground/20 py-3 focus:border-accent outline-none transition-colors appearance-none">
+                <option value="" disabled>Select a service...</option>
                 <option value="development">Development Services</option>
                 <option value="ai-automation">AI & Automation</option>
                 <option value="marketing">Digital Marketing</option>
@@ -74,12 +96,18 @@ export function Contact() {
             </div>
 
             <div className="flex flex-col gap-2">
-              <label className="text-sm font-medium">Message</label>
-              <textarea rows={4} className="bg-transparent border-b border-foreground/20 py-3 focus:border-accent outline-none transition-colors resize-none" placeholder="Tell us about your project..."></textarea>
+              <label htmlFor="message" className="text-sm font-medium">Message</label>
+              <textarea required name="message" id="message" rows={4} className="bg-transparent border-b border-foreground/20 py-3 focus:border-accent outline-none transition-colors resize-none" placeholder="Tell us about your project..."></textarea>
             </div>
 
-            <button type="button" className="mt-6 w-full py-4 bg-foreground text-background rounded-full font-bold uppercase tracking-wider hover:scale-[1.02] transition-transform">
-              Send Message
+            {status && (
+              <div className={`p-4 rounded-lg text-sm font-medium ${status.success ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'}`}>
+                {status.message}
+              </div>
+            )}
+
+            <button disabled={loading} type="submit" className="mt-6 w-full py-4 bg-foreground text-background rounded-full font-bold uppercase tracking-wider hover:scale-[1.02] transition-transform disabled:opacity-50 disabled:cursor-not-allowed">
+              {loading ? "Sending..." : "Send Message"}
             </button>
           </form>
         </motion.div>

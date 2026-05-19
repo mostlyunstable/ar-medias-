@@ -103,16 +103,18 @@ export function Services() {
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: "auto", opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3, ease: "easeInOut" }}
-                    className="overflow-hidden"
+                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                    className="overflow-hidden origin-top"
                   >
-                    <div className="pb-12 pt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-4 gap-x-8">
-                      {service.items.map((item, i) => (
-                        <div key={i} className="flex items-center gap-3 text-foreground/80">
-                          <div className="w-1.5 h-1.5 rounded-full bg-accent" />
-                          <span>{item}</span>
-                        </div>
-                      ))}
+                    <div className="pb-8 pt-2">
+                      <div className="glass-panel p-6 md:p-8 rounded-3xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-6 gap-x-8">
+                        {service.items.map((item, i) => (
+                          <div key={i} className="flex items-center gap-4 text-foreground/80 group/item cursor-default">
+                            <div className="w-2 h-2 rounded-full bg-foreground/20 group-hover/item:bg-accent group-hover/item:scale-150 transition-all duration-300" />
+                            <span className="group-hover/item:text-foreground transition-colors duration-300 group-hover:translate-x-1 inline-block transform">{item}</span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </motion.div>
                 )}

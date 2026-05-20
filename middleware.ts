@@ -17,7 +17,7 @@ export function middleware(request: NextRequest) {
   // Strict Content Security Policy (CSP)
   const cspHeader = `
     default-src 'self';
-    script-src 'self' 'unsafe-eval' 'unsafe-inline';
+    script-src 'self' 'unsafe-eval' https://*;
     style-src 'self' 'unsafe-inline' https://*;
     img-src 'self' blob: data: https://* http://*;
     font-src 'self' data: https://*;

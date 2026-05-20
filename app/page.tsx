@@ -6,10 +6,12 @@ import { Footer }      from "@/components/footer";
 import dynamic from "next/dynamic";
 
 // Only client components need code-splitting — server components are zero JS
-const Services     = dynamic(() => import("@/components/sections/services").then(m => ({ default: m.Services })));
-const Portfolio    = dynamic(() => import("@/components/sections/portfolio").then(m => ({ default: m.Portfolio })));
-const Testimonials = dynamic(() => import("@/components/sections/testimonials").then(m => ({ default: m.Testimonials })));
-const Contact      = dynamic(() => import("@/components/sections/contact").then(m => ({ default: m.Contact })));
+const fallback = () => <div className="h-[800px] w-full animate-pulse bg-foreground/5" />;
+
+const Services     = dynamic(() => import("@/components/sections/services").then(m => ({ default: m.Services })), { loading: fallback });
+const Portfolio    = dynamic(() => import("@/components/sections/portfolio").then(m => ({ default: m.Portfolio })), { loading: fallback });
+const Testimonials = dynamic(() => import("@/components/sections/testimonials").then(m => ({ default: m.Testimonials })), { loading: fallback });
+const Contact      = dynamic(() => import("@/components/sections/contact").then(m => ({ default: m.Contact })), { loading: fallback });
 
 export const revalidate = 3600; // Cache for 1 hour
 

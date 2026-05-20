@@ -14,10 +14,9 @@ export function middleware(request: NextRequest) {
   response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
   response.headers.set("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload");
 
-  // Strict Content Security Policy (CSP)
   const cspHeader = `
     default-src 'self';
-    script-src 'self' 'unsafe-eval' https://*;
+    script-src 'self' 'unsafe-eval' 'unsafe-inline' https://*;
     style-src 'self' 'unsafe-inline' https://*;
     img-src 'self' blob: data: https://* http://*;
     font-src 'self' data: https://*;

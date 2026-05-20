@@ -6,7 +6,7 @@ import { Suspense } from "react";
 
 export default function CanvasScene() {
   return (
-    <Canvas camera={{ position: [0, 0, 5], fov: 45 }} dpr={[1, 2]} frameloop="demand">
+    <Canvas camera={{ position: [0, 0, 5], fov: 45 }} dpr={[1, 2]}>
       <Suspense fallback={null}>
         {/* Procedural Environment: 0 network requests, instant loading */}
         <Environment resolution={256}>
